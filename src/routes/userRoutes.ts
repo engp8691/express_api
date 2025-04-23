@@ -1,6 +1,5 @@
 import { Router } from 'express';
-import { loginUser } from '../controllers/loginController';
-import { createUser, assignRoleToUser, getUserWithRoles, getAllUsersWithRoles } from '../controllers/userController';
+import { createUser, assignRoleToUser, getUserWithRoles, getAllUsersWithRoles, loginUser } from '../controllers/userController';
 import { validateBody } from '../middlewares/validateBody';
 import { createUserSchema, loginSchema } from '../validations/userSchema';
 

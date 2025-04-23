@@ -1,17 +1,32 @@
 import { NextFunction, Request, Response } from 'express';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import config from '../config/config';
 import { PrismaClient } from '../generated/prisma';
 import {
   allUsersResponseSchema,
   userResponseSchema,
 } from '../validations/userSchema';
 import { ValidationError } from 'yup';
+import { User } from '../types/user';
 
 const prisma = new PrismaClient();
 
-export const createUser = async (req: Request, res: Response) => {
-  const { name, email } = req.body;
-  const user = await prisma.user.create({ data: { name, email } });
-  res.json(user);
+const saltRounds = 10;
+export const generateHashedString = async (plainText: string) => await bcrypt.hash(plainText, saltRounds);
+
+export const createUser = async (req: Request<{}, {}, Omit<User, 'id'> & { password: string }>, res: Response) => {
+  const { name, email, age, password } = req.body;
+
+  const existingUser = await prisma.user.findUnique({where: { email: email }});
+  if (existingUser) {
+    res.status(409).json({ message: 'User with this email exists' });
+      return;
+  }
+
+  const user = await prisma.user.create({ data: { name, email, age, hashed_password: await generateHashedString(password) } });
+
+  res.json({...user, hashed_password: undefined});
 };
 
 export const assignRoleToUser = async (req: Request, res: Response) => {
@@ -48,8 +63,7 @@ export const getAllUsersWithRoles = async (
       email: user.email,
       name: user.name,
       userRoles: user.userRoles.map(({ role }) => ({
-        id: role.id,
-        name: role.name,
+        ...role,
       })),
     }));
 
@@ -101,12 +115,11 @@ export const getUserWithRoles = async (
       email: user.email,
       name: user.name,
       userRoles: user.userRoles.map(({ role }) => ({
-        id: role.id,
-        name: role.name,
+        ...role,
       })),
     };
 
-    const validationResult = await userResponseSchema.validate(
+    await userResponseSchema.validate(
       transformedUser,
       { strict: true },
     );
@@ -122,5 +135,69 @@ export const getUserWithRoles = async (
     }
 
     next(err);
+  }
+};
+
+export const loginUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { email, password } = req.body;
+    // console.log(99999142, await generateHashedString(password));
+
+    if (!email || !password) {
+      res.status(400).json({ message: 'Email and password are required.' });
+      return;
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { email: email },
+      include: {
+        userRoles: {
+          include: { role: true },
+        },
+      },
+    })
+    console.log(9999153, user)
+
+    if (!user) {
+      res.status(404).json({ message: 'User with this email does not exist' });
+      return;
+    }
+
+    if (
+      !(await bcrypt.compare(
+        password,
+        user.hashed_password
+      ))
+    ) {
+      res.status(401).json({ message: 'Invalid credentials' });
+      return
+    }
+
+    const token = jwt.sign(
+      {
+        id: user.id,
+        user: {
+          email: user.email,
+          name: user.name,
+          age: user.age,
+          userRoles: user.userRoles.map(({ role }) => ({
+            ...role,
+          })),
+        },
+      },
+      config.secret,
+      { expiresIn: '1h' },
+    );
+
+    res.json({
+      message: 'Login successful',
+      token
+    })
+  } catch (error) {
+    next(error);
   }
 };
