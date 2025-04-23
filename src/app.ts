@@ -9,9 +9,12 @@ import { logger } from './middlewares/logger';
 const app = express();
 app.use(logger);
 app.use(cors());
+
+// For older versions of express, bodyParser is required
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// For express v4.16.0 or newer, built in express.json() is prefered
 // app.use(express.json());
 
 // Routes
