@@ -1,0 +1,10 @@
+{
+    "eslint.validate": ["typescript", "javascript"],
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+    },
+    "editor.formatOnSave": true,
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 1000
+  }
+  

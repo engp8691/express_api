@@ -47,7 +47,7 @@ export declare type AllModelsToStringIndex<TypeMap extends TypeMapDef, Args exte
 } : {};
 
 declare class AnyNull extends NullTypesEnumValue {
-    private readonly _brand_AnyNull;
+    private readonly _brand_AnyNull
 }
 
 export declare type ApplyOmit<T, OmitConfig> = Compute<{
@@ -205,7 +205,7 @@ declare const ColumnTypeEnum: {
     readonly BytesArray: 77;
     readonly UuidArray: 78;
     readonly UnknownNumber: 128;
-};
+}
 
 declare type CompactedBatchResponse = {
     type: 'compacted';
@@ -341,14 +341,14 @@ export declare function createParam(name: string): Param<unknown, string>;
 declare type CustomDataProxyFetch = (fetch: unknown) => unknown;
 
 declare class DataLoader<T = unknown> {
-    private options;
+    private options
     batches: {
         [key: string]: Job[];
-    };
-    private tickActive;
+    }
+    private tickActive
     constructor(options: DataLoaderOptions<T>);
     request(request: T): Promise<any>;
-    private dispatchBatches;
+    private dispatchBatches
     get [Symbol.toStringTag](): string;
 }
 
@@ -384,7 +384,7 @@ declare type Datasources = {
 };
 
 declare class DbNull extends NullTypesEnumValue {
-    private readonly _brand_DbNull;
+    private readonly _brand_DbNull
 }
 
 export declare const Debug: typeof debugCreate & {
@@ -393,7 +393,7 @@ export declare const Debug: typeof debugCreate & {
     enabled(namespace: string): boolean;
     log: (...args: string[]) => void;
     formatters: {};
-};
+}
 
 /**
  * Create a new debug instance with the given namespace.
@@ -437,9 +437,9 @@ export declare namespace Decimal {
 }
 
 export declare class Decimal {
-    readonly d: number[];
-    readonly e: number;
-    readonly s: number;
+    readonly d: number[]
+    readonly e: number
+    readonly s: number
 
     constructor(n: Decimal.Value);
 
@@ -658,28 +658,28 @@ export declare class Decimal {
     static tanh(n: Decimal.Value): Decimal;
     static trunc(n: Decimal.Value): Decimal;
 
-    static readonly default?: Decimal.Constructor;
-    static readonly Decimal?: Decimal.Constructor;
+    static readonly default?: Decimal.Constructor
+    static readonly Decimal?: Decimal.Constructor
 
-    static readonly precision: number;
-    static readonly rounding: Decimal.Rounding;
-    static readonly toExpNeg: number;
-    static readonly toExpPos: number;
-    static readonly minE: number;
-    static readonly maxE: number;
-    static readonly crypto: boolean;
-    static readonly modulo: Decimal.Modulo;
+    static readonly precision: number
+    static readonly rounding: Decimal.Rounding
+    static readonly toExpNeg: number
+    static readonly toExpPos: number
+    static readonly minE: number
+    static readonly maxE: number
+    static readonly crypto: boolean
+    static readonly modulo: Decimal.Modulo
 
-    static readonly ROUND_UP: 0;
-    static readonly ROUND_DOWN: 1;
-    static readonly ROUND_CEIL: 2;
-    static readonly ROUND_FLOOR: 3;
-    static readonly ROUND_HALF_UP: 4;
-    static readonly ROUND_HALF_DOWN: 5;
-    static readonly ROUND_HALF_EVEN: 6;
-    static readonly ROUND_HALF_CEIL: 7;
-    static readonly ROUND_HALF_FLOOR: 8;
-    static readonly EUCLID: 9;
+    static readonly ROUND_UP: 0
+    static readonly ROUND_DOWN: 1
+    static readonly ROUND_CEIL: 2
+    static readonly ROUND_FLOOR: 3
+    static readonly ROUND_HALF_UP: 4
+    static readonly ROUND_HALF_DOWN: 5
+    static readonly ROUND_HALF_EVEN: 6
+    static readonly ROUND_HALF_CEIL: 7
+    static readonly ROUND_HALF_FLOOR: 8
+    static readonly EUCLID: 9
 }
 
 /**
@@ -708,7 +708,7 @@ export declare function defineDmmfProperty(target: object, runtimeDataModel: Run
 
 declare function defineExtension(ext: ExtensionArgs | ((client: Client) => Client)): (client: Client) => Client;
 
-declare const denylist: readonly ["$connect", "$disconnect", "$on", "$transaction", "$use", "$extends"];
+declare const denylist: readonly ["$connect", "$disconnect", "$on", "$transaction", "$use", "$extends"]
 
 declare type Deprecation = ReadonlyDeep_2<{
     sinceVersion: string;
@@ -986,7 +986,7 @@ export declare type DynamicResultExtensionNeeds<TypeMap extends TypeMapDef, M ex
 /**
  * Placeholder value for "no text".
  */
-export declare const empty: Sql;
+export declare const empty: Sql
 
 export declare type EmptyToUnknown<T> = T;
 
@@ -1926,7 +1926,7 @@ export declare function isTypedSql(value: unknown): value is UnknownTypedSql;
 
 export declare type ITXClientDenyList = (typeof denylist)[number];
 
-export declare const itxClientDenyList: readonly (string | symbol)[];
+export declare const itxClientDenyList: readonly (string | symbol)[]
 
 declare interface Job {
     resolve: (data: any) => void;
@@ -1978,7 +1978,7 @@ declare type JsonFieldSelection = {
 };
 
 declare class JsonNull extends NullTypesEnumValue {
-    private readonly _brand_JsonNull;
+    private readonly _brand_JsonNull
 }
 
 /**
@@ -2127,7 +2127,7 @@ declare type Mappings = ReadonlyDeep_2<{
  * recompute.
  */
 declare class MergedExtensionsList {
-    private head?;
+    private head?
     private constructor();
     static empty(): MergedExtensionsList;
     static single(extension: ExtensionArgs): MergedExtensionsList;
@@ -2164,7 +2164,7 @@ export declare type Metrics = {
 };
 
 export declare class MetricsClient {
-    private _client;
+    private _client
     constructor(client: Client);
     /**
      * Returns all metrics gathered up to this point in prometheus format.
@@ -2208,7 +2208,7 @@ declare type MiddlewareArgsMapper<RequestArgs, MiddlewareArgs> = {
 };
 
 declare class MiddlewareHandler<M extends Function> {
-    private _middlewares;
+    private _middlewares
     use(middleware: M): void;
     get(id: number): M | undefined;
     has(id: number): boolean;
@@ -2336,9 +2336,9 @@ export declare const objectEnumValues: {
         JsonNull: JsonNull;
         AnyNull: AnyNull;
     };
-};
+}
 
-declare const officialPrismaAdapters: readonly ["@prisma/adapter-planetscale", "@prisma/adapter-neon", "@prisma/adapter-libsql", "@prisma/adapter-d1", "@prisma/adapter-pg", "@prisma/adapter-pg-worker"];
+declare const officialPrismaAdapters: readonly ["@prisma/adapter-planetscale", "@prisma/adapter-neon", "@prisma/adapter-libsql", "@prisma/adapter-d1", "@prisma/adapter-pg", "@prisma/adapter-pg-worker"]
 
 export declare type Omission = Record<string, boolean | Skip>;
 
@@ -2438,18 +2438,18 @@ declare type PrimaryKey = ReadonlyDeep_2<{
 }>;
 
 export declare class PrismaClientInitializationError extends Error {
-    clientVersion: string;
-    errorCode?: string;
-    retryable?: boolean;
+    clientVersion: string
+    errorCode?: string
+    retryable?: boolean
     constructor(message: string, clientVersion: string, errorCode?: string);
     get [Symbol.toStringTag](): string;
 }
 
 export declare class PrismaClientKnownRequestError extends Error implements ErrorWithBatchIndex {
-    code: string;
-    meta?: Record<string, unknown>;
-    clientVersion: string;
-    batchRequestIdx?: number;
+    code: string
+    meta?: Record<string, unknown>
+    clientVersion: string
+    batchRequestIdx?: number
     constructor(message: string, { code, clientVersion, meta, batchRequestIdx }: KnownErrorParams);
     get [Symbol.toStringTag](): string;
 }
@@ -2512,21 +2512,21 @@ export declare type PrismaClientOptions = {
 };
 
 export declare class PrismaClientRustPanicError extends Error {
-    clientVersion: string;
+    clientVersion: string
     constructor(message: string, clientVersion: string);
     get [Symbol.toStringTag](): string;
 }
 
 export declare class PrismaClientUnknownRequestError extends Error implements ErrorWithBatchIndex {
-    clientVersion: string;
-    batchRequestIdx?: number;
+    clientVersion: string
+    batchRequestIdx?: number
     constructor(message: string, { clientVersion, batchRequestIdx }: UnknownErrorParams);
     get [Symbol.toStringTag](): string;
 }
 
 export declare class PrismaClientValidationError extends Error {
-    name: string;
-    clientVersion: string;
+    name: string
+    clientVersion: string
     constructor(message: string, { clientVersion }: Options);
     get [Symbol.toStringTag](): string;
 }
@@ -2605,7 +2605,7 @@ declare type PrismaPromiseInteractiveTransaction<PayloadType = unknown> = {
 
 declare type PrismaPromiseTransaction<PayloadType = unknown> = PrismaPromiseBatchTransaction | PrismaPromiseInteractiveTransaction<PayloadType>;
 
-export declare const PrivateResultType: unique symbol;
+export declare const PrivateResultType: unique symbol
 
 declare type Provider = 'mysql' | 'postgres' | 'sqlite';
 
@@ -2827,9 +2827,9 @@ declare interface RequestError {
 }
 
 declare class RequestHandler {
-    client: Client;
-    dataloader: DataLoader<RequestParams>;
-    private logEmitter?;
+    client: Client
+    dataloader: DataLoader<RequestParams>
+    private logEmitter?
     constructor(client: Client, logEmitter?: LogEmitter);
     request(params: RequestParams): Promise<any>;
     mapQueryEngineResult({ dataPath, unpacker }: RequestParams, response: QueryEngineResultData<any>): any;
@@ -3049,7 +3049,7 @@ declare class Skip {
     ifUndefined<T>(value: T | undefined): T | Skip;
 }
 
-export declare const skip: Skip;
+export declare const skip: Skip
 
 declare type SortOrder = 'asc' | 'desc';
 
@@ -3307,8 +3307,8 @@ declare enum SpanStatusCode {
  * A SQL instance can be nested within each other to build SQL strings.
  */
 export declare class Sql {
-    readonly values: Value[];
-    readonly strings: string[];
+    readonly values: Value[]
+    readonly strings: string[]
     constructor(rawStrings: readonly string[], rawValues: readonly RawValue[]);
     get sql(): string;
     get statement(): string;
@@ -3481,7 +3481,7 @@ declare type TransactionOptions_3<InteractiveTransactionPayload> = {
 };
 
 export declare class TypedSql<Values extends readonly unknown[], Result> {
-    [PrivateResultType]: Result;
+    [PrivateResultType]: Result
     constructor(sql: string, values: Values);
     get sql(): string;
     get values(): Values;
@@ -3599,6 +3599,6 @@ export declare type Value = unknown;
 
 export declare function warnEnvConflicts(envPaths: any): void;
 
-export declare const warnOnce: (key: string, message: string, ...args: unknown[]) => void;
+export declare const warnOnce: (key: string, message: string, ...args: unknown[]) => void
 
 export { }
