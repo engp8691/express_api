@@ -1,46 +1,57 @@
-import { NextFunction, Request, Response } from 'express';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import config from '../config/config';
-import { PrismaClient } from '../generated/prisma';
+import { NextFunction, Request, Response } from 'express'
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
+import config from '../config/config'
+import { PrismaClient } from '../generated/prisma'
 import {
   allUsersResponseSchema,
   userResponseSchema,
-} from '../validations/userSchema';
-import { ValidationError } from 'yup';
-import { User } from '../types/user';
+} from '../validations/userSchema'
+import { ValidationError } from 'yup'
+import { User } from '../types/user'
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient()
 
-const saltRounds = 10;
-export const generateHashedString = async (plainText: string) => await bcrypt.hash(plainText, saltRounds);
+const saltRounds = 10
+export const generateHashedString = async (plainText: string) =>
+  await bcrypt.hash(plainText, saltRounds)
 
-export const createUser = async (req: Request<{}, {}, Omit<User, 'id'> & { password: string }>, res: Response) => {
-  const { name, email, age, password } = req.body;
+export const createUser = async (
+  req: Request<{}, {}, Omit<User, 'id'> & { password: string }>,
+  res: Response,
+) => {
+  const { name, email, age, password } = req.body
 
-  const existingUser = await prisma.user.findUnique({where: { email: email }});
+  const existingUser = await prisma.user.findUnique({ where: { email: email } })
   if (existingUser) {
-    res.status(409).json({ message: 'User with this email exists' });
-      return;
+    res.status(409).json({ message: 'User with this email exists' })
+    return
   }
 
-  const user = await prisma.user.create({ data: { name, email, age, hashed_password: await generateHashedString(password) } });
+  const user = await prisma.user.create({
+    data: {
+      name,
+      email,
+      age,
+      hashed_password: await generateHashedString(password),
+    },
+  })
 
-  res.json({...user, hashed_password: undefined});
-};
+  res.json({ ...user, hashed_password: undefined })
+}
 
 export const assignRoleToUser = async (req: Request, res: Response) => {
-  const { userId, roleId } = req.params;
+  const { userId, roleId } = req.params
 
   const userRole = await prisma.userRole.create({
     data: {
       userId: userId,
       roleId: roleId,
     },
-  });
+  })
 
-  res.json(userRole);
-};
+  res.json(userRole)
+}
 
 export const getAllUsersWithRoles = async (
   req: Request,
@@ -56,7 +67,7 @@ export const getAllUsersWithRoles = async (
           },
         },
       },
-    });
+    })
 
     const transformedUsers = users.map((user) => ({
       id: user.id,
@@ -65,34 +76,32 @@ export const getAllUsersWithRoles = async (
       userRoles: user.userRoles.map(({ role }) => ({
         ...role,
       })),
-    }));
+    }))
 
     await allUsersResponseSchema.validate(transformedUsers, {
       strict: true,
       abortEarly: false,
-    });
+    })
 
-    res.json(transformedUsers);
+    res.json(transformedUsers)
   } catch (err) {
     if (err instanceof ValidationError) {
-      res
-        .status(500)
-        .json({
-          message: 'Invalid response structure',
-          errors: err.errors
-        });
+      res.status(500).json({
+        message: 'Invalid response structure',
+        errors: err.errors,
+      })
     }
 
-    next(err);
+    next(err)
   }
-};
+}
 
 export const getUserWithRoles = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
-  const { userId } = req.params;
+  const { userId } = req.params
 
   try {
     const user = await prisma.user.findUnique({
@@ -102,11 +111,11 @@ export const getUserWithRoles = async (
           include: { role: true },
         },
       },
-    });
+    })
 
     if (!user) {
-      res.status(404).json({ message: 'User not found' });
-      return;
+      res.status(404).json({ message: 'User not found' })
+      return
     }
 
     // Flattern the user object
@@ -117,26 +126,23 @@ export const getUserWithRoles = async (
       userRoles: user.userRoles.map(({ role }) => ({
         ...role,
       })),
-    };
+    }
 
-    await userResponseSchema.validate(
-      transformedUser,
-      { strict: true },
-    );
+    await userResponseSchema.validate(transformedUser, { strict: true })
 
-    res.json(transformedUser);
+    res.json(transformedUser)
   } catch (err) {
     if (err instanceof ValidationError) {
       res.status(500).json({
         message: 'Invalid response structure',
         errors: err.errors,
-      });
-      return;
+      })
+      return
     }
 
-    next(err);
+    next(err)
   }
-};
+}
 
 export const loginUser = async (
   req: Request,
@@ -144,12 +150,12 @@ export const loginUser = async (
   next: NextFunction,
 ) => {
   try {
-    const { email, password } = req.body;
+    const { email, password } = req.body
     // console.log(99999142, await generateHashedString(password));
 
     if (!email || !password) {
-      res.status(400).json({ message: 'Email and password are required.' });
-      return;
+      res.status(400).json({ message: 'Email and password are required.' })
+      return
     }
 
     const user = await prisma.user.findUnique({
@@ -160,20 +166,14 @@ export const loginUser = async (
         },
       },
     })
-    console.log(9999153, user)
 
     if (!user) {
-      res.status(404).json({ message: 'User with this email does not exist' });
-      return;
+      res.status(404).json({ message: 'User with this email does not exist' })
+      return
     }
 
-    if (
-      !(await bcrypt.compare(
-        password,
-        user.hashed_password
-      ))
-    ) {
-      res.status(401).json({ message: 'Invalid credentials' });
+    if (!(await bcrypt.compare(password, user.hashed_password))) {
+      res.status(401).json({ message: 'Invalid credentials' })
       return
     }
 
@@ -191,13 +191,13 @@ export const loginUser = async (
       },
       config.secret,
       { expiresIn: '1h' },
-    );
+    )
 
     res.json({
       message: 'Login successful',
-      token
+      token,
     })
   } catch (error) {
-    next(error);
+    next(error)
   }
-};
+}
