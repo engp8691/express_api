@@ -64,7 +64,7 @@ export const deleteItem = (req: Request, res: Response, next: NextFunction) => {
       return;
     }
     const deletedItem = items.splice(itemIndex, 1)[0];
-    res.json(deletedItem);
+    res.status(204).end();
   } catch (error) {
     next(error);
   }
