@@ -2,8 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import itemRoutes from './routes/itemRoutes';
-import { errorHandler } from './middlewares/errorHandler';
 import userRoutes from './routes/userRoutes';
+import roleRoutes from './routes/roleRoutes';
+import { errorHandler } from './middlewares/errorHandler';
 import { logger } from './middlewares/logger';
 
 const app = express();
@@ -19,7 +20,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Routes
 app.use('/api/items', itemRoutes);
-app.use('/api/user', userRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/roles', roleRoutes);
 
 // Global error handler (should be after routes)
 app.use(errorHandler);
