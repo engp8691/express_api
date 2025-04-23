@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "User" ADD COLUMN     "age" INTEGER NOT NULL DEFAULT 18,
+ADD COLUMN     "hashed_password" TEXT NOT NULL DEFAULT '';
