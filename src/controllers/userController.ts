@@ -144,6 +144,20 @@ export const getUserWithRoles = async (
   }
 }
 
+export const deleteUser = async (req: Request, res: Response) => {
+  const { userId } = req.params
+
+  try {
+    await prisma.user.delete({
+      where: { id: userId },
+    })
+
+    res.status(204).end()
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to delete user' })
+  }
+}
+
 export const loginUser = async (
   req: Request,
   res: Response,
