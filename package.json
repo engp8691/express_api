@@ -22,6 +22,7 @@
     "@types/jest": "^29.5.14",
     "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.14.1",
+    "@types/swagger-ui-express": "^4.1.8",
     "@types/yup": "^0.32.0",
     "@typescript-eslint/eslint-plugin": "^8.31.0",
     "@typescript-eslint/parser": "^8.31.0",
@@ -41,10 +42,13 @@
   },
   "dependencies": {
     "@prisma/client": "^6.6.0",
+    "@sinclair/typebox": "^0.34.33",
     "bcrypt": "^5.1.1",
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
     "jsonwebtoken": "^9.0.2",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
     "yup": "^1.6.1"
   }
 }

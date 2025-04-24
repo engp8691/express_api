@@ -1,12 +1,14 @@
 import express from 'express'
 import cors from 'cors'
 import bodyParser from 'body-parser'
+import swaggerUi from 'swagger-ui-express'
 import itemRoutes from './routes/itemRoutes'
 import userRoutes from './routes/userRoutes'
 import roleRoutes from './routes/roleRoutes'
 import { errorHandler } from './middlewares/errorHandler'
 import { logger } from './middlewares/logger'
 import { checkContentTypeAndAccept } from './middlewares/checkContentTypeAndAccept'
+import { swaggerSpec } from './swagger/config'
 
 const app = express()
 app.use(logger)
@@ -27,5 +29,7 @@ app.use('/api/roles', roleRoutes)
 
 // Global error handler (should be after routes)
 app.use(errorHandler)
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
 export default app
