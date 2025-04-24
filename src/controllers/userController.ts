@@ -151,7 +151,6 @@ export const loginUser = async (
 ) => {
   try {
     const { email, password } = req.body
-    // console.log(99999142, await generateHashedString(password));
 
     if (!email || !password) {
       res.status(400).json({ message: 'Email and password are required.' })
