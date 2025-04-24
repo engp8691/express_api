@@ -9,5 +9,17 @@ export const createRole = async (req: Request, res: Response) => {
   res.json(role)
 }
 
-const hello = 'world'
-console.log(hello)
+export const deleteRole = async (req: Request, res: Response) => {
+  const { roleId } = req.params
+
+  try {
+    await prisma.role.delete({
+      where: { id: roleId },
+    })
+
+    res.status(204).end()
+  } catch (error) {
+    console.error('Error deleting user:', error)
+    res.status(500).json({ error: 'Failed to delete role' })
+  }
+}
