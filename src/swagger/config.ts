@@ -1,4 +1,10 @@
-import { RoleSchema, UserSchema } from '../routes/schemas/user.schema'
+import { Type } from '@sinclair/typebox'
+import {
+  RolePayloadSchema,
+  RoleSchema,
+  UserPayloadSchema,
+  UserSchema,
+} from '../routes/schemas/user.schema'
 
 export const swaggerSpec = {
   openapi: '3.0.0',
@@ -6,10 +12,22 @@ export const swaggerSpec = {
     title: 'My API',
     version: '1.0.0',
   },
+  tags: [
+    {
+      name: 'Users',
+      description: 'Operations related to users',
+    },
+    {
+      name: 'Roles',
+      description: 'Operations related to roles',
+    },
+  ],
   components: {
     schemas: {
       Role: RoleSchema,
       User: UserSchema,
+      UserPayload: UserPayloadSchema,
+      RolePayload: RolePayloadSchema,
     },
   },
   servers: [
@@ -20,7 +38,47 @@ export const swaggerSpec = {
   ],
   paths: {
     '/users': {
+      post: {
+        tags: ['Users'],
+        summary: 'Create a new user',
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/UserPayload',
+              },
+            },
+          },
+        },
+        responses: {
+          201: {
+            description: 'User created successfully',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/User',
+                },
+              },
+            },
+          },
+          409: {
+            description: 'User with the same email already exists',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    message: { type: 'string' },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
       get: {
+        tags: ['Users'],
         summary: 'Get all users',
         responses: {
           200: {
@@ -41,6 +99,7 @@ export const swaggerSpec = {
     },
     '/users/{id}': {
       get: {
+        tags: ['Users'],
         summary: 'Get user by ID',
         parameters: [
           {
@@ -65,17 +124,95 @@ export const swaggerSpec = {
               },
             },
           },
-          403: {
-            description: 'Athentication failed.',
+          403: { description: 'Authentication failed.' },
+          404: { description: 'User not found.' },
+          406: { description: 'Invalid request headers.' },
+          500: { description: 'Internal server error.' },
+        },
+      },
+      delete: {
+        tags: ['Users'],
+        summary: 'Delete user by ID',
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            description: 'UUID of the user',
+            schema: {
+              type: 'string',
+              format: 'uuid',
+            },
           },
-          404: {
-            description: 'User not found.',
+        ],
+        responses: {
+          204: {
+            description: 'User deleted successfully',
+            content: {},
           },
-          406: {
-            description: 'Content type or accept is wrong in the request head.',
+          403: { description: 'Authentication failed.' },
+          404: { description: 'User not found.' },
+          406: { description: 'Invalid request headers.' },
+          500: { description: 'Internal server error.' },
+        },
+      },
+    },
+    '/roles': {
+      post: {
+        tags: ['Roles'],
+        summary: 'Create a new role',
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/RolePayload',
+              },
+            },
           },
-          500: {
-            description: 'Internal server error.',
+        },
+        responses: {
+          201: {
+            description: 'Role created successfully',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/Role',
+                },
+              },
+            },
+          },
+          409: {
+            description: 'Role with the same name already exists',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    message: { type: 'string' },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      get: {
+        tags: ['Roles'],
+        summary: 'Get all roles',
+        responses: {
+          200: {
+            description: 'List of roles',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'array',
+                  items: {
+                    $ref: '#/components/schemas/Role',
+                  },
+                },
+              },
+            },
           },
         },
       },

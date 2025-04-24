@@ -12,3 +12,12 @@ export const UserSchema = Type.Object({
   age: Type.Number(),
   userRoles: Type.Array(RoleSchema),
 })
+
+export const UserPayloadSchema = Type.Intersect([
+  Type.Omit(UserSchema, ['id', 'userRoles']),
+  Type.Object({
+    password: Type.String(),
+  }),
+])
+
+export const RolePayloadSchema = Type.Omit(RoleSchema, ['id'])
