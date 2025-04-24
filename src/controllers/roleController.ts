@@ -19,7 +19,6 @@ export const deleteRole = async (req: Request, res: Response) => {
 
     res.status(204).end()
   } catch (error) {
-    console.error('Error deleting user:', error)
     res.status(500).json({ error: 'Failed to delete role' })
   }
 }
