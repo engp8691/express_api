@@ -144,6 +144,46 @@ export const getUserWithRoles = async (
   }
 }
 
+export const updateUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const { userId } = req.params
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      include: {
+        userRoles: {
+          include: { role: true },
+        },
+      },
+    })
+
+    if (!user) {
+      res.status(404).json({ message: 'User not found' })
+      return
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        name: req.body.name,
+        email: req.body.email,
+        age: req.body.age,
+        hashed_password: req.body.password
+          ? await generateHashedString(req.body.password)
+          : undefined,
+      },
+    })
+
+    res.json({ ...updatedUser, hashed_password: undefined })
+  } catch (err) {
+    next(err)
+  }
+}
+
 export const deleteUser = async (req: Request, res: Response) => {
   const { userId } = req.params
 

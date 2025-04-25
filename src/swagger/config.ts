@@ -27,6 +27,7 @@ export const swaggerSpec = {
       Role: RoleSchema,
       User: UserSchema,
       UserPayload: UserPayloadSchema,
+      UserUpdatePayload: Type.Partial(UserPayloadSchema),
       RolePayload: RolePayloadSchema,
     },
   },
@@ -130,6 +131,47 @@ export const swaggerSpec = {
           500: { description: 'Internal server error.' },
         },
       },
+      put: {
+        tags: ['Users'],
+        summary: 'Update user',
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            description: 'UUID of the user',
+            schema: {
+              type: 'string',
+              format: 'uuid',
+            },
+          },
+        ],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/UserPayload',
+              },
+            },
+          },
+        },
+        responses: {
+          200: {
+            description: 'Updated user',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'array',
+                  items: {
+                    $ref: '#/components/schemas/User',
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
       delete: {
         tags: ['Users'],
         summary: 'Delete user by ID',
@@ -214,6 +256,104 @@ export const swaggerSpec = {
               },
             },
           },
+        },
+      },
+    },
+    '/roles/{id}': {
+      get: {
+        tags: ['Roles'],
+        summary: 'Get role by ID',
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            description: 'UUID of the role',
+            schema: {
+              type: 'string',
+              format: 'uuid',
+            },
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Role data',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/Role',
+                },
+              },
+            },
+          },
+          403: { description: 'Authentication failed.' },
+          404: { description: 'Role not found.' },
+          406: { description: 'Invalid request headers.' },
+          500: { description: 'Internal server error.' },
+        },
+      },
+      put: {
+        tags: ['Roles'],
+        summary: 'Update role',
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            description: 'UUID of the role',
+            schema: {
+              type: 'string',
+              format: 'uuid',
+            },
+          },
+        ],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/RolePayload',
+              },
+            },
+          },
+        },
+        responses: {
+          200: {
+            description: 'Role data',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/Role',
+                },
+              },
+            },
+          },
+        },
+      },
+      delete: {
+        tags: ['Roles'],
+        summary: 'Delete role by ID',
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            description: 'UUID of the role',
+            schema: {
+              type: 'string',
+              format: 'uuid',
+            },
+          },
+        ],
+        responses: {
+          204: {
+            description: 'Role deleted successfully',
+            content: {},
+          },
+          403: { description: 'Authentication failed.' },
+          404: { description: 'Role not found.' },
+          406: { description: 'Invalid request headers.' },
+          500: { description: 'Internal server error.' },
         },
       },
     },
