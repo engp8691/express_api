@@ -22,7 +22,7 @@ export const createUser = async (
 ) => {
   const { name, email, age, password } = req.body
 
-  const existingUser = await prisma.user.findUnique({ where: { email: email } })
+  const existingUser = await prisma.user.findFirst({ where: { email: email } })
   if (existingUser) {
     res.status(409).json({ message: 'User with this email exists' })
     return
@@ -211,7 +211,7 @@ export const loginUser = async (
       return
     }
 
-    const user = await prisma.user.findUnique({
+    const user = await prisma.user.findFirst({
       where: { email: email },
       include: {
         userRoles: {
