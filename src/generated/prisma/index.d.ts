@@ -3,7 +3,7 @@
  * Client
 **/
 
-import * as runtime from './runtime/library.js'
+import * as runtime from './runtime/library.js';
 import $Types = runtime.Types // general types
 import $Public = runtime.Types.Public
 import $Utils = runtime.Types.Utils
@@ -241,8 +241,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.6.0
-   * Query Engine version: f676762280b54cd07c770017ed3711ddde35f37a
+   * Prisma Client JS version: 6.9.0
+   * Query Engine version: 81e4af48011447c3cc503a190e86995b66d2a28e
    */
   export type PrismaVersion = {
     client: string
@@ -564,7 +564,7 @@ export namespace Prisma {
 
   type Cast<A, B> = A extends B ? A : B;
 
-  export const type: unique symbol
+  export const type: unique symbol;
 
 
 
@@ -626,7 +626,7 @@ export namespace Prisma {
     User: 'User',
     Role: 'Role',
     UserRole: 'UserRole'
-  }
+  };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
 
@@ -4296,7 +4296,7 @@ export namespace Prisma {
     ReadCommitted: 'ReadCommitted',
     RepeatableRead: 'RepeatableRead',
     Serializable: 'Serializable'
-  }
+  };
 
   export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
@@ -4307,7 +4307,7 @@ export namespace Prisma {
     name: 'name',
     age: 'age',
     hashed_password: 'hashed_password'
-  }
+  };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
@@ -4315,7 +4315,7 @@ export namespace Prisma {
   export const RoleScalarFieldEnum: {
     id: 'id',
     name: 'name'
-  }
+  };
 
   export type RoleScalarFieldEnum = (typeof RoleScalarFieldEnum)[keyof typeof RoleScalarFieldEnum]
 
@@ -4324,7 +4324,7 @@ export namespace Prisma {
     userId: 'userId',
     roleId: 'roleId',
     assignedAt: 'assignedAt'
-  }
+  };
 
   export type UserRoleScalarFieldEnum = (typeof UserRoleScalarFieldEnum)[keyof typeof UserRoleScalarFieldEnum]
 
@@ -4332,7 +4332,7 @@ export namespace Prisma {
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
-  }
+  };
 
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
@@ -4340,7 +4340,7 @@ export namespace Prisma {
   export const QueryMode: {
     default: 'default',
     insensitive: 'insensitive'
-  }
+  };
 
   export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
 
