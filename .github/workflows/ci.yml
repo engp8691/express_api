@@ -56,6 +56,9 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
+      - name: 🛠️ Build express api app
+        run: npm run build
+
       - name: 🐳 Build Docker image for express api
         run: |
           IMAGE_NAME=express-api
