@@ -32,6 +32,7 @@ ENV DB_PORT=5432
 ENV DB_NAME='cradl'
 ENV DB_USER='cradl'
 ENV DB_PASS='EGlOzWDdcNYywV25FboD7ldsjM9MCQ3Y'
+ENV DATABASE_URL='postgresql://cradl:EGlOzWDdcNYywV25FboD7ldsjM9MCQ3Y@dpg-d17dftqdbo4c73fqk2eg-a.ohio-postgres.render.com/cradl'
 
 # Install OpenSSL for Prisma engine
 RUN apk add --no-cache openssl
