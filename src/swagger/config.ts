@@ -36,6 +36,10 @@ export const swaggerSpec = {
       url: 'http://localhost:3000/api',
       description: 'Local development server',
     },
+    {
+      url: 'http://http://express-api-alb-1-97419546.us-east-2.elb.amazonaws.com/api',
+      description: 'AWS erver',
+    },
   ],
   paths: {
     '/users': {
