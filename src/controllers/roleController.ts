@@ -21,29 +21,20 @@ export const getAllRolesWithUsers = async (req: Request, res: Response) => {
       },
     })
 
-    const transformedRoles = roles.map(
-      (role: { id: any; name: any; userRoles: any[] }) => ({
-        id: role.id,
-        name: role.name,
-        userRoles: role.userRoles.map(
-          (user: {
-            userId: any
-            roleId: any
-            assignedAt: any
-            user: { id: any; email: any; name: any }
-          }) => ({
-            userId: user.userId,
-            roleId: user.roleId,
-            assignedAt: user.assignedAt,
-            user: {
-              id: user.user.id,
-              email: user.user.email,
-              name: user.user.name,
-            },
-          }),
-        ),
-      }),
-    )
+    const transformedRoles = roles.map((role) => ({
+      id: role.id,
+      name: role.name,
+      userRoles: role.userRoles.map((user) => ({
+        userId: user.userId,
+        roleId: user.roleId,
+        assignedAt: user.assignedAt,
+        user: {
+          id: user.user.id,
+          email: user.user.email,
+          name: user.user.name,
+        },
+      })),
+    }))
 
     res.status(200).json(transformedRoles)
   } catch (error) {
@@ -72,23 +63,16 @@ export const getRoleWithUsers = async (req: Request, res: Response) => {
     const transformedRoles = {
       id: role.id,
       name: role.name,
-      userRoles: role.userRoles.map(
-        (user: {
-          userId: any
-          roleId: any
-          assignedAt: any
-          user: { id: any; email: any; name: any }
-        }) => ({
-          userId: user.userId,
-          roleId: user.roleId,
-          assignedAt: user.assignedAt,
-          user: {
-            id: user.user.id,
-            email: user.user.email,
-            name: user.user.name,
-          },
-        }),
-      ),
+      userRoles: role.userRoles.map((user) => ({
+        userId: user.userId,
+        roleId: user.roleId,
+        assignedAt: user.assignedAt,
+        user: {
+          id: user.user.id,
+          email: user.user.email,
+          name: user.user.name,
+        },
+      })),
     }
 
     res.status(200).json(transformedRoles)

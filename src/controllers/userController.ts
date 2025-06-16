@@ -69,21 +69,14 @@ export const getAllUsersWithRoles = async (
       },
     })
 
-    const transformedUsers = users.map(
-      (user: {
-        id: any
-        email: any
-        name: any
-        userRoles: { role: any }[]
-      }) => ({
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        userRoles: user.userRoles.map(({ role }) => ({
-          ...role,
-        })),
-      }),
-    )
+    const transformedUsers = users.map((user) => ({
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      userRoles: user.userRoles.map(({ role }) => ({
+        ...role,
+      })),
+    }))
 
     await allUsersResponseSchema.validate(transformedUsers, {
       strict: true,
@@ -130,11 +123,9 @@ export const getUserWithRoles = async (
       id: user.id,
       email: user.email,
       name: user.name,
-      userRoles: user.userRoles.map(
-        ({ role }: { role: { id: any; name: any; userRoles: any[] } }) => ({
-          ...role,
-        }),
-      ),
+      userRoles: user.userRoles.map(({ role }) => ({
+        ...role,
+      })),
     }
 
     await userResponseSchema.validate(transformedUser, { strict: true })
@@ -246,11 +237,9 @@ export const loginUser = async (
           email: user.email,
           name: user.name,
           age: user.age,
-          userRoles: user.userRoles.map(
-            ({ role }: { role: { id: any; name: any; userRoles: any[] } }) => ({
-              ...role,
-            }),
-          ),
+          userRoles: user.userRoles.map(({ role }) => ({
+            ...role,
+          })),
         },
       },
       config.secret,
