@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import config from '../config/config'
-import { PrismaClient } from '../generated/prisma'
+import { PrismaClient } from '@prisma/client'
 import {
   allUsersResponseSchema,
   userResponseSchema,
@@ -199,7 +199,7 @@ export const deleteUser = async (req: Request, res: Response) => {
 }
 
 export const loginUser = async (
-  req: Request,
+  req: Request<{ email: string; password: string }>,
   res: Response,
   next: NextFunction,
 ) => {
@@ -247,7 +247,6 @@ export const loginUser = async (
     )
 
     res.json({
-      message: 'Login successful',
       token,
     })
   } catch (error) {

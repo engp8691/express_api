@@ -47,7 +47,7 @@ export declare type AllModelsToStringIndex<TypeMap extends TypeMapDef, Args exte
 } : {};
 
 declare class AnyNull extends NullTypesEnumValue {
-    private readonly _brand_AnyNull
+    #private;
 }
 
 export declare type ApplyOmit<T, OmitConfig> = Compute<{
@@ -73,7 +73,7 @@ export declare type Args_3<T, F extends Operation> = Args<T, F>;
  * Query arguments marked with this type are sanitized before being sent to the database.
  * Notice while a query argument may be `null`, `ArgType` is guaranteed to be defined.
  */
-declare type ArgType = 'Int32' | 'Int64' | 'Float' | 'Double' | 'Text' | 'Enum' | 'EnumArray' | 'Bytes' | 'Boolean' | 'Char' | 'Array' | 'Numeric' | 'Json' | 'Xml' | 'Uuid' | 'DateTime' | 'Date' | 'Time';
+declare type ArgType = 'Int32' | 'Int64' | 'Float' | 'Double' | 'Text' | 'Enum' | 'EnumArray' | 'Bytes' | 'Boolean' | 'Char' | 'Array' | 'Numeric' | 'Json' | 'Xml' | 'Uuid' | 'DateTime' | 'Date' | 'Time' | 'Unknown';
 
 /**
  * Attributes is a map from string to attribute values.
@@ -98,7 +98,7 @@ export declare type BaseDMMF = {
 declare type BatchArgs = {
     queries: BatchQuery[];
     transaction?: {
-        isolationLevel?: IsolationLevel;
+        isolationLevel?: IsolationLevel_2;
     };
 };
 
@@ -126,7 +126,7 @@ declare type BatchQueryOptionsCbArgs = {
 declare type BatchResponse = MultiBatchResponse | CompactedBatchResponse;
 
 declare type BatchTransactionOptions = {
-    isolationLevel?: IsolationLevel;
+    isolationLevel?: Transaction_2.IsolationLevel;
 };
 
 declare interface BinaryTargetsEnvValue {
@@ -205,12 +205,12 @@ declare const ColumnTypeEnum: {
     readonly BytesArray: 77;
     readonly UuidArray: 78;
     readonly UnknownNumber: 128;
-}
+};
 
 declare type CompactedBatchResponse = {
     type: 'compacted';
     plan: object;
-    arguments: Map<string, {}>[];
+    arguments: Record<string, {}>[];
     nestedSelection: string[];
     keys: string[];
     expectNonEmpty: boolean;
@@ -341,14 +341,14 @@ export declare function createParam(name: string): Param<unknown, string>;
 declare type CustomDataProxyFetch = (fetch: unknown) => unknown;
 
 declare class DataLoader<T = unknown> {
-    private options
+    private options;
     batches: {
         [key: string]: Job[];
-    }
-    private tickActive
+    };
+    private tickActive;
     constructor(options: DataLoaderOptions<T>);
     request(request: T): Promise<any>;
-    private dispatchBatches
+    private dispatchBatches;
     get [Symbol.toStringTag](): string;
 }
 
@@ -384,7 +384,7 @@ declare type Datasources = {
 };
 
 declare class DbNull extends NullTypesEnumValue {
-    private readonly _brand_DbNull
+    #private;
 }
 
 export declare const Debug: typeof debugCreate & {
@@ -393,7 +393,7 @@ export declare const Debug: typeof debugCreate & {
     enabled(namespace: string): boolean;
     log: (...args: string[]) => void;
     formatters: {};
-}
+};
 
 /**
  * Create a new debug instance with the given namespace.
@@ -437,9 +437,9 @@ export declare namespace Decimal {
 }
 
 export declare class Decimal {
-    readonly d: number[]
-    readonly e: number
-    readonly s: number
+    readonly d: number[];
+    readonly e: number;
+    readonly s: number;
 
     constructor(n: Decimal.Value);
 
@@ -658,28 +658,28 @@ export declare class Decimal {
     static tanh(n: Decimal.Value): Decimal;
     static trunc(n: Decimal.Value): Decimal;
 
-    static readonly default?: Decimal.Constructor
-    static readonly Decimal?: Decimal.Constructor
+    static readonly default?: Decimal.Constructor;
+    static readonly Decimal?: Decimal.Constructor;
 
-    static readonly precision: number
-    static readonly rounding: Decimal.Rounding
-    static readonly toExpNeg: number
-    static readonly toExpPos: number
-    static readonly minE: number
-    static readonly maxE: number
-    static readonly crypto: boolean
-    static readonly modulo: Decimal.Modulo
+    static readonly precision: number;
+    static readonly rounding: Decimal.Rounding;
+    static readonly toExpNeg: number;
+    static readonly toExpPos: number;
+    static readonly minE: number;
+    static readonly maxE: number;
+    static readonly crypto: boolean;
+    static readonly modulo: Decimal.Modulo;
 
-    static readonly ROUND_UP: 0
-    static readonly ROUND_DOWN: 1
-    static readonly ROUND_CEIL: 2
-    static readonly ROUND_FLOOR: 3
-    static readonly ROUND_HALF_UP: 4
-    static readonly ROUND_HALF_DOWN: 5
-    static readonly ROUND_HALF_EVEN: 6
-    static readonly ROUND_HALF_CEIL: 7
-    static readonly ROUND_HALF_FLOOR: 8
-    static readonly EUCLID: 9
+    static readonly ROUND_UP: 0;
+    static readonly ROUND_DOWN: 1;
+    static readonly ROUND_CEIL: 2;
+    static readonly ROUND_FLOOR: 3;
+    static readonly ROUND_HALF_UP: 4;
+    static readonly ROUND_HALF_DOWN: 5;
+    static readonly ROUND_HALF_EVEN: 6;
+    static readonly ROUND_HALF_CEIL: 7;
+    static readonly ROUND_HALF_FLOOR: 8;
+    static readonly EUCLID: 9;
 }
 
 /**
@@ -708,7 +708,7 @@ export declare function defineDmmfProperty(target: object, runtimeDataModel: Run
 
 declare function defineExtension(ext: ExtensionArgs | ((client: Client) => Client)): (client: Client) => Client;
 
-declare const denylist: readonly ["$connect", "$disconnect", "$on", "$transaction", "$use", "$extends"]
+declare const denylist: readonly ["$connect", "$disconnect", "$on", "$transaction", "$use", "$extends"];
 
 declare type Deprecation = ReadonlyDeep_2<{
     sinceVersion: string;
@@ -986,7 +986,7 @@ export declare type DynamicResultExtensionNeeds<TypeMap extends TypeMapDef, M ex
 /**
  * Placeholder value for "no text".
  */
-export declare const empty: Sql
+export declare const empty: Sql;
 
 export declare type EmptyToUnknown<T> = T;
 
@@ -1148,6 +1148,49 @@ declare type Error_2 = {
 } | {
     kind: 'InvalidIsolationLevel';
     level: string;
+} | {
+    kind: 'LengthMismatch';
+    column?: string;
+} | {
+    kind: 'UniqueConstraintViolation';
+    fields: string[];
+} | {
+    kind: 'NullConstraintViolation';
+    fields: string[];
+} | {
+    kind: 'ForeignKeyConstraintViolation';
+    constraint?: {
+        fields: string[];
+    } | {
+        index: string;
+    } | {
+        foreignKey: {};
+    };
+} | {
+    kind: 'DatabaseDoesNotExist';
+    db?: string;
+} | {
+    kind: 'DatabaseAlreadyExists';
+    db?: string;
+} | {
+    kind: 'DatabaseAccessDenied';
+    db?: string;
+} | {
+    kind: 'AuthenticationFailed';
+    user?: string;
+} | {
+    kind: 'TransactionWriteConflict';
+} | {
+    kind: 'TableDoesNotExist';
+    table?: string;
+} | {
+    kind: 'ColumnNotFound';
+    column?: string;
+} | {
+    kind: 'TooManyConnections';
+    cause: string;
+} | {
+    kind: 'SocketTimeout';
 } | {
     kind: 'postgres';
     code: string;
@@ -1432,7 +1475,7 @@ export declare type GetAggregateResult<P extends OperationPayload, A> = {
     };
 };
 
-declare function getBatchRequestPayload(batch: JsonQuery[], transaction?: TransactionOptions_3<unknown>): QueryEngineBatchRequest;
+declare function getBatchRequestPayload(batch: JsonQuery[], transaction?: TransactionOptions_2<unknown>): QueryEngineBatchRequest;
 
 export declare type GetBatchResult = {
     count: number;
@@ -1595,7 +1638,7 @@ export declare function getPrismaClient(config: GetPrismaClientConfig): {
          */
         _transactionWithCallback({ callback, options, }: {
             callback: (client: Client) => Promise<unknown>;
-            options?: TransactionOptions_2;
+            options?: Options;
         }): Promise<unknown>;
         _createItxClient(transaction: PrismaPromiseInteractiveTransaction): Client;
         /**
@@ -1920,13 +1963,15 @@ declare type InternalRequestParams = {
 
 declare type IsolationLevel = 'READ UNCOMMITTED' | 'READ COMMITTED' | 'REPEATABLE READ' | 'SNAPSHOT' | 'SERIALIZABLE';
 
+declare type IsolationLevel_2 = 'ReadUncommitted' | 'ReadCommitted' | 'RepeatableRead' | 'Snapshot' | 'Serializable';
+
 declare function isSkip(value: unknown): value is Skip;
 
 export declare function isTypedSql(value: unknown): value is UnknownTypedSql;
 
 export declare type ITXClientDenyList = (typeof denylist)[number];
 
-export declare const itxClientDenyList: readonly (string | symbol)[]
+export declare const itxClientDenyList: readonly (string | symbol)[];
 
 declare interface Job {
     resolve: (data: any) => void;
@@ -1964,7 +2009,7 @@ export declare interface JsonArray extends Array<JsonValue> {
 export declare type JsonBatchQuery = {
     batch: JsonQuery[];
     transaction?: {
-        isolationLevel?: IsolationLevel;
+        isolationLevel?: IsolationLevel_2;
     };
 };
 
@@ -1978,7 +2023,7 @@ declare type JsonFieldSelection = {
 };
 
 declare class JsonNull extends NullTypesEnumValue {
-    private readonly _brand_JsonNull
+    #private;
 }
 
 /**
@@ -2127,7 +2172,7 @@ declare type Mappings = ReadonlyDeep_2<{
  * recompute.
  */
 declare class MergedExtensionsList {
-    private head?
+    private head?;
     private constructor();
     static empty(): MergedExtensionsList;
     static single(extension: ExtensionArgs): MergedExtensionsList;
@@ -2164,7 +2209,7 @@ export declare type Metrics = {
 };
 
 export declare class MetricsClient {
-    private _client
+    private _client;
     constructor(client: Client);
     /**
      * Returns all metrics gathered up to this point in prometheus format.
@@ -2208,7 +2253,7 @@ declare type MiddlewareArgsMapper<RequestArgs, MiddlewareArgs> = {
 };
 
 declare class MiddlewareHandler<M extends Function> {
-    private _middlewares
+    private _middlewares;
     use(middleware: M): void;
     get(id: number): M | undefined;
     has(id: number): boolean;
@@ -2336,9 +2381,9 @@ export declare const objectEnumValues: {
         JsonNull: JsonNull;
         AnyNull: AnyNull;
     };
-}
+};
 
-declare const officialPrismaAdapters: readonly ["@prisma/adapter-planetscale", "@prisma/adapter-neon", "@prisma/adapter-libsql", "@prisma/adapter-d1", "@prisma/adapter-pg", "@prisma/adapter-pg-worker"]
+declare const officialPrismaAdapters: readonly ["@prisma/adapter-planetscale", "@prisma/adapter-neon", "@prisma/adapter-libsql", "@prisma/adapter-d1", "@prisma/adapter-pg", "@prisma/adapter-pg-worker"];
 
 export declare type Omission = Record<string, boolean | Skip>;
 
@@ -2379,6 +2424,15 @@ export declare type OptionalKeys<O> = {
 }[keyof O];
 
 declare type Options = {
+    /** Timeout for starting the transaction */
+    maxWait?: number;
+    /** Timeout for the transaction body */
+    timeout?: number;
+    /** Transaction isolation level */
+    isolationLevel?: IsolationLevel_2;
+};
+
+declare type Options_2 = {
     clientVersion: string;
 };
 
@@ -2438,18 +2492,18 @@ declare type PrimaryKey = ReadonlyDeep_2<{
 }>;
 
 export declare class PrismaClientInitializationError extends Error {
-    clientVersion: string
-    errorCode?: string
-    retryable?: boolean
+    clientVersion: string;
+    errorCode?: string;
+    retryable?: boolean;
     constructor(message: string, clientVersion: string, errorCode?: string);
     get [Symbol.toStringTag](): string;
 }
 
 export declare class PrismaClientKnownRequestError extends Error implements ErrorWithBatchIndex {
-    code: string
-    meta?: Record<string, unknown>
-    clientVersion: string
-    batchRequestIdx?: number
+    code: string;
+    meta?: Record<string, unknown>;
+    clientVersion: string;
+    batchRequestIdx?: number;
     constructor(message: string, { code, clientVersion, meta, batchRequestIdx }: KnownErrorParams);
     get [Symbol.toStringTag](): string;
 }
@@ -2512,22 +2566,22 @@ export declare type PrismaClientOptions = {
 };
 
 export declare class PrismaClientRustPanicError extends Error {
-    clientVersion: string
+    clientVersion: string;
     constructor(message: string, clientVersion: string);
     get [Symbol.toStringTag](): string;
 }
 
 export declare class PrismaClientUnknownRequestError extends Error implements ErrorWithBatchIndex {
-    clientVersion: string
-    batchRequestIdx?: number
+    clientVersion: string;
+    batchRequestIdx?: number;
     constructor(message: string, { clientVersion, batchRequestIdx }: UnknownErrorParams);
     get [Symbol.toStringTag](): string;
 }
 
 export declare class PrismaClientValidationError extends Error {
-    name: string
-    clientVersion: string
-    constructor(message: string, { clientVersion }: Options);
+    name: string;
+    clientVersion: string;
+    constructor(message: string, { clientVersion }: Options_2);
     get [Symbol.toStringTag](): string;
 }
 
@@ -2579,7 +2633,7 @@ declare interface PrismaPromise_2<TResult, TSpec extends PrismaOperationSpec<unk
 declare type PrismaPromiseBatchTransaction = {
     kind: 'batch';
     id: number;
-    isolationLevel?: IsolationLevel;
+    isolationLevel?: IsolationLevel_2;
     index: number;
     lock: PromiseLike<void>;
 };
@@ -2605,7 +2659,7 @@ declare type PrismaPromiseInteractiveTransaction<PayloadType = unknown> = {
 
 declare type PrismaPromiseTransaction<PayloadType = unknown> = PrismaPromiseBatchTransaction | PrismaPromiseInteractiveTransaction<PayloadType>;
 
-export declare const PrivateResultType: unique symbol
+export declare const PrivateResultType: unique symbol;
 
 declare type Provider = 'mysql' | 'postgres' | 'sqlite';
 
@@ -2645,8 +2699,8 @@ declare interface Queryable<Query, Result> extends AdapterInfo {
 }
 
 declare type QueryCompiler = {
-    compile(request: string): Promise<string>;
-    compileBatch(batchRequest: string): Promise<BatchResponse>;
+    compile(request: string): string;
+    compileBatch(batchRequest: string): BatchResponse;
 };
 
 declare interface QueryCompilerConstructor {
@@ -2662,7 +2716,7 @@ declare type QueryCompilerOptions = {
 declare type QueryEngineBatchGraphQLRequest = {
     batch: QueryEngineRequest[];
     transaction?: boolean;
-    isolationLevel?: IsolationLevel;
+    isolationLevel?: IsolationLevel_2;
 };
 
 declare type QueryEngineBatchRequest = QueryEngineBatchGraphQLRequest | JsonBatchQuery;
@@ -2808,7 +2862,7 @@ export declare type RenameAndNestPayloadKeys<P> = {
 };
 
 declare type RequestBatchOptions<InteractiveTransactionPayload> = {
-    transaction?: TransactionOptions_3<InteractiveTransactionPayload>;
+    transaction?: TransactionOptions_2<InteractiveTransactionPayload>;
     traceparent?: string;
     numTry?: number;
     containsWrite: boolean;
@@ -2827,9 +2881,9 @@ declare interface RequestError {
 }
 
 declare class RequestHandler {
-    client: Client
-    dataloader: DataLoader<RequestParams>
-    private logEmitter?
+    client: Client;
+    dataloader: DataLoader<RequestParams>;
+    private logEmitter?;
     constructor(client: Client, logEmitter?: LogEmitter);
     request(params: RequestParams): Promise<any>;
     mapQueryEngineResult({ dataPath, unpacker }: RequestParams, response: QueryEngineResultData<any>): any;
@@ -3049,7 +3103,7 @@ declare class Skip {
     ifUndefined<T>(value: T | undefined): T | Skip;
 }
 
-export declare const skip: Skip
+export declare const skip: Skip;
 
 declare type SortOrder = 'asc' | 'desc';
 
@@ -3307,8 +3361,8 @@ declare enum SpanStatusCode {
  * A SQL instance can be nested within each other to build SQL strings.
  */
 export declare class Sql {
-    readonly values: Value[]
-    readonly strings: string[]
+    readonly values: Value[];
+    readonly strings: string[];
     constructor(rawStrings: readonly string[], rawValues: readonly RawValue[]);
     get sql(): string;
     get statement(): string;
@@ -3452,7 +3506,8 @@ declare interface Transaction extends AdapterInfo, SqlQueryable {
 
 declare namespace Transaction_2 {
     export {
-        TransactionOptions_2 as Options,
+        Options,
+        IsolationLevel_2 as IsolationLevel,
         InteractiveTransactionInfo,
         TransactionHeaders
     }
@@ -3466,13 +3521,7 @@ declare type TransactionOptions = {
     usePhantomQuery: boolean;
 };
 
-declare type TransactionOptions_2 = {
-    maxWait?: number;
-    timeout?: number;
-    isolationLevel?: IsolationLevel;
-};
-
-declare type TransactionOptions_3<InteractiveTransactionPayload> = {
+declare type TransactionOptions_2<InteractiveTransactionPayload> = {
     kind: 'itx';
     options: InteractiveTransactionOptions<InteractiveTransactionPayload>;
 } | {
@@ -3481,7 +3530,7 @@ declare type TransactionOptions_3<InteractiveTransactionPayload> = {
 };
 
 export declare class TypedSql<Values extends readonly unknown[], Result> {
-    [PrivateResultType]: Result
+    [PrivateResultType]: Result;
     constructor(sql: string, values: Values);
     get sql(): string;
     get values(): Values;
@@ -3599,6 +3648,6 @@ export declare type Value = unknown;
 
 export declare function warnEnvConflicts(envPaths: any): void;
 
-export declare const warnOnce: (key: string, message: string, ...args: unknown[]) => void
+export declare const warnOnce: (key: string, message: string, ...args: unknown[]) => void;
 
 export { }

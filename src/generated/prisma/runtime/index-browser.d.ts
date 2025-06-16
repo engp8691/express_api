@@ -1,5 +1,5 @@
 declare class AnyNull extends NullTypesEnumValue {
-    private readonly _brand_AnyNull
+    #private;
 }
 
 declare type Args<T, F extends Operation> = T extends {
@@ -15,7 +15,7 @@ declare type Args<T, F extends Operation> = T extends {
 } ? T[symbol]['types']['operations'][F]['args'] : any;
 
 declare class DbNull extends NullTypesEnumValue {
-    private readonly _brand_DbNull
+    #private;
 }
 
 export declare function Decimal(n: Decimal.Value): Decimal;
@@ -42,9 +42,9 @@ export declare namespace Decimal {
 }
 
 export declare class Decimal {
-    readonly d: number[]
-    readonly e: number
-    readonly s: number
+    readonly d: number[];
+    readonly e: number;
+    readonly s: number;
 
     constructor(n: Decimal.Value);
 
@@ -263,28 +263,28 @@ export declare class Decimal {
     static tanh(n: Decimal.Value): Decimal;
     static trunc(n: Decimal.Value): Decimal;
 
-    static readonly default?: Decimal.Constructor
-    static readonly Decimal?: Decimal.Constructor
+    static readonly default?: Decimal.Constructor;
+    static readonly Decimal?: Decimal.Constructor;
 
-    static readonly precision: number
-    static readonly rounding: Decimal.Rounding
-    static readonly toExpNeg: number
-    static readonly toExpPos: number
-    static readonly minE: number
-    static readonly maxE: number
-    static readonly crypto: boolean
-    static readonly modulo: Decimal.Modulo
+    static readonly precision: number;
+    static readonly rounding: Decimal.Rounding;
+    static readonly toExpNeg: number;
+    static readonly toExpPos: number;
+    static readonly minE: number;
+    static readonly maxE: number;
+    static readonly crypto: boolean;
+    static readonly modulo: Decimal.Modulo;
 
-    static readonly ROUND_UP: 0
-    static readonly ROUND_DOWN: 1
-    static readonly ROUND_CEIL: 2
-    static readonly ROUND_FLOOR: 3
-    static readonly ROUND_HALF_UP: 4
-    static readonly ROUND_HALF_DOWN: 5
-    static readonly ROUND_HALF_EVEN: 6
-    static readonly ROUND_HALF_CEIL: 7
-    static readonly ROUND_HALF_FLOOR: 8
-    static readonly EUCLID: 9
+    static readonly ROUND_UP: 0;
+    static readonly ROUND_DOWN: 1;
+    static readonly ROUND_CEIL: 2;
+    static readonly ROUND_FLOOR: 3;
+    static readonly ROUND_HALF_UP: 4;
+    static readonly ROUND_HALF_DOWN: 5;
+    static readonly ROUND_HALF_EVEN: 6;
+    static readonly ROUND_HALF_CEIL: 7;
+    static readonly ROUND_HALF_FLOOR: 8;
+    static readonly EUCLID: 9;
 }
 
 declare type Exact<A, W> = (A extends unknown ? (W extends A ? {
@@ -300,7 +300,7 @@ declare type GetRuntimeOutput = {
 };
 
 declare class JsonNull extends NullTypesEnumValue {
-    private readonly _brand_JsonNull
+    #private;
 }
 
 /**
@@ -348,7 +348,7 @@ export declare const objectEnumValues: {
         JsonNull: JsonNull;
         AnyNull: AnyNull;
     };
-}
+};
 
 declare type Operation = 'findFirst' | 'findFirstOrThrow' | 'findUnique' | 'findUniqueOrThrow' | 'findMany' | 'create' | 'createMany' | 'createManyAndReturn' | 'update' | 'updateMany' | 'updateManyAndReturn' | 'upsert' | 'delete' | 'deleteMany' | 'aggregate' | 'count' | 'groupBy' | '$queryRaw' | '$executeRaw' | '$queryRawUnsafe' | '$executeRawUnsafe' | 'findRaw' | 'aggregateRaw' | '$runCommandRaw';
 

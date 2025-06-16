@@ -1,7 +1,9 @@
 import { Type } from '@sinclair/typebox'
 import {
+  LoginPayloadSchema,
   RolePayloadSchema,
   RoleSchema,
+  TokenSchema,
   UserPayloadSchema,
   UserSchema,
 } from '../routes/schemas/user.schema'
@@ -29,12 +31,18 @@ export const swaggerSpec = {
       UserPayload: UserPayloadSchema,
       UserUpdatePayload: Type.Partial(UserPayloadSchema),
       RolePayload: RolePayloadSchema,
+      LoginPayload: LoginPayloadSchema,
+      Token: TokenSchema,
     },
   },
   servers: [
     {
       url: 'http://localhost:3000/api',
       description: 'Local development server',
+    },
+    {
+      url: 'http://express-api-alb-1-97419546.us-east-2.elb.amazonaws.com/api',
+      description: 'AWS erver',
     },
   ],
   paths: {
@@ -354,6 +362,36 @@ export const swaggerSpec = {
           404: { description: 'Role not found.' },
           406: { description: 'Invalid request headers.' },
           500: { description: 'Internal server error.' },
+        },
+      },
+    },
+    '/users/login': {
+      post: {
+        tags: ['Users'],
+        summary: 'Login a user',
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/LoginPayload',
+              },
+            },
+          },
+        },
+        responses: {
+          200: {
+            description: 'Login successful',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/Token',
+                },
+              },
+            },
+          },
+          401: { description: 'Invalid credentials' },
+          404: { description: 'User with this email does not exist' },
         },
       },
     },
