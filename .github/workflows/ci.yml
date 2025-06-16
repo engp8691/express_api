@@ -61,7 +61,7 @@ jobs:
           IMAGE_NAME=express-api
           AWS_ACCOUNT_ID=456048140117
           ECR_REGISTRY=${AWS_ACCOUNT_ID}.dkr.ecr.us-east-2.amazonaws.com
-          docker build -t $ECR_REGISTRY/$IMAGE_NAME:latest -f apps/backend/Dockerfile .
+          docker build -t $ECR_REGISTRY/$IMAGE_NAME:latest -f Dockerfile .
 
       - name: 🧪 List Docker images for debugging
         run: docker images
